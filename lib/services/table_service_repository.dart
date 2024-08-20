@@ -1,6 +1,7 @@
 import 'package:sqflite/sqlite_api.dart';
 import 'package:table_service/data/models/order.dart';
 import 'package:table_service/data/models/order_item.dart';
+import 'package:table_service/data/models/product.dart';
 import 'package:table_service/data/models/service_table.dart';
 
 class TableServiceRepository {
@@ -81,16 +82,14 @@ class TableServiceRepository {
         JOIN 
           products ON order_items.productId = products.id
         JOIN 
-          tables ON orders.tableId = tables.id;
+          tables ON orders.tableId = tables.id
         WHERE
           orders.id = ? AND orders.status = ?;
-        ''', [orderId, "opened"]);
+        ''', [orderId, Status.opened.name]);
 
     if (maps.isEmpty) {
       return null;
     }
-
-    print(maps);
 
     return List.generate(
       maps.length,
@@ -138,6 +137,21 @@ class TableServiceRepository {
     return List.generate(
       maps.length,
       (index) => ServiceTable.fromJson(
+        maps[index],
+      ),
+    );
+  }
+
+  Future<List<Product>?> getAllProducts() async {
+    List<Map<String, dynamic>> maps = await _tableServiceDb.query("products");
+
+    if (maps.isEmpty) {
+      return null;
+    }
+
+    return List.generate(
+      maps.length,
+      (index) => Product.fromJson(
         maps[index],
       ),
     );

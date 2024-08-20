@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_service/data/models/order_item.dart';
+import 'package:table_service/table_details_screen/cubit/table_details_cubit.dart';
 
 class TableOrderedItem extends StatefulWidget {
   const TableOrderedItem(this.orderedItem, {super.key});
@@ -40,7 +42,13 @@ class _TableOrderedItemState extends State<TableOrderedItem> {
           Row(
             children: [
               IconButton.outlined(
-                  onPressed: () {},
+                  onPressed: () {
+                    BlocProvider.of<TableDetailsCubit>(context)
+                        .changeOrderItemQuantity(
+                      orderItem: widget.orderedItem,
+                      isPlus: false,
+                    );
+                  },
                   icon: Icon(widget.orderedItem.quantity == 1
                       ? Icons.delete_outline
                       : Icons.remove)),
@@ -51,7 +59,14 @@ class _TableOrderedItemState extends State<TableOrderedItem> {
               ),
               const SizedBox(width: 5),
               IconButton.outlined(
-                  onPressed: () {}, icon: const Icon(Icons.add)),
+                  onPressed: () {
+                    BlocProvider.of<TableDetailsCubit>(context)
+                        .changeOrderItemQuantity(
+                      orderItem: widget.orderedItem,
+                      isPlus: true,
+                    );
+                  },
+                  icon: const Icon(Icons.add)),
             ],
           )
       ],
