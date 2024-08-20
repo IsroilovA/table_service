@@ -1,5 +1,6 @@
 import 'package:sqflite/sqlite_api.dart';
 import 'package:table_service/data/models/order_item.dart';
+import 'package:table_service/data/models/service_table.dart';
 
 class TableServiceRepository {
   TableServiceRepository({required Database tableServiceDb})
@@ -46,6 +47,21 @@ class TableServiceRepository {
     return List.generate(
       maps.length,
       (index) => OrderItem.fromJson(
+        maps[index],
+      ),
+    );
+  }
+
+  Future<List<ServiceTable>?> getAllTables() async {
+    List<Map<String, dynamic>> maps = await _tableServiceDb.query("tables");
+
+    if (maps.isEmpty) {
+      return null;
+    }
+
+    return List.generate(
+      maps.length,
+      (index) => ServiceTable.fromJson(
         maps[index],
       ),
     );

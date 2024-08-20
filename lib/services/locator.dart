@@ -28,7 +28,7 @@ Future<void> initialiseLocator() async {
           id TEXT PRIMARY KEY,
           tableId TEXT NOT NULL,
           status TEXT NOT NULL,
-          waiter TEXT,
+          waiter TEXT NOT NULL,
           FOREIGN KEY (tableId) REFERENCES tables(id)
         )
       ''');

@@ -9,7 +9,7 @@ const uuid = Uuid();
 class ServiceTable {
   String id;
   String name;
-  DateTime timeServed;
+  DateTime? timeServed;
 
   ServiceTable({
     required this.name,

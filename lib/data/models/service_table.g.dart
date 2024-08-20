@@ -8,8 +8,9 @@ part of 'service_table.dart';
 
 ServiceTable _$ServiceTableFromJson(Map<String, dynamic> json) => ServiceTable(
       name: json['name'] as String,
-      timeServed:
-          DateTime.fromMillisecondsSinceEpoch(json['timeServed'] as int),
+      timeServed: json['timeServed'] == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(json['timeServed'] as int),
       id: json['id'],
     );
 
@@ -17,5 +18,5 @@ Map<String, dynamic> _$ServiceTableToJson(ServiceTable instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'timeServed': instance.timeServed.millisecondsSinceEpoch,
+      'timeServed': instance.timeServed?.millisecondsSinceEpoch,
     };
