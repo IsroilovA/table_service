@@ -156,4 +156,49 @@ class TableServiceRepository {
       ),
     );
   }
+
+  Future<void> saveChanges(List<OrderItem> orderItems) async {
+    // Fetch all existing items for the given order ID at once
+    List<Map<String, dynamic>> existingItemsMaps = await _tableServiceDb.query(
+      "order_items",
+      where: 'orderId = ?',
+      whereArgs: [orderItems.first.order.id],
+    );
+
+    Batch batch = _tableServiceDb.batch();
+
+    for (OrderItem orderItem in orderItems) {
+      // Check if the item exists in the database
+      bool exists = existingItemsMaps
+          .any((existingItem) => existingItem["id"] == orderItem.id);
+
+      if (!exists) {
+        // INSERT new item
+        batch.insert("order_items", orderItem.toJson());
+      } else {
+        // Check if the item has changed
+        var existingItem = existingItemsMaps.firstWhere(
+          (existingItem) => existingItem["id"] == orderItem.id,
+        );
+
+        if ((existingItem["quantity"] as num).toInt() != orderItem.quantity) {
+          batch.update("order_items", {'quantity': orderItem.quantity},
+              where: 'id = ?', whereArgs: [orderItem.id]);
+        }
+      }
+    }
+
+    // DELETE any items in the database that are not in the updated list
+    for (var existingItem in existingItemsMaps) {
+      bool stillExists =
+          orderItems.any((updatedItem) => updatedItem.id == existingItem["id"]);
+
+      if (!stillExists) {
+        batch.delete("order_items",
+            where: 'id = ?', whereArgs: [existingItem["id"]]);
+      }
+    }
+
+    await batch.commit(noResult: true);
+  }
 }

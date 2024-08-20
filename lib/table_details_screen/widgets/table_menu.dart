@@ -41,6 +41,7 @@ class TableMenu extends StatelessWidget {
                 } else if (state is ProductsLoaded) {
                   return Expanded(
                     child: GridView.builder(
+                      shrinkWrap: true,
                       itemCount: state.products.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -49,9 +50,7 @@ class TableMenu extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) {
                         return ProductItem(
-                          product: state.products[index],
-                          onTap: onTap
-                        );
+                            product: state.products[index], onTap: onTap);
                       },
                     ),
                   );

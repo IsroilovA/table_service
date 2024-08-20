@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:table_service/data/models/order.dart';
 import 'package:table_service/data/models/order_item.dart';
@@ -14,15 +15,26 @@ class TableDetailsCubit extends Cubit<TableDetailsState> {
 
   final TableServiceRepository _tableServiceRepository;
 
-  List<OrderItem>? orderItems = [];
+  List<OrderItem> orderItems = [];
+
+  void saveChanges(BuildContext context) async {
+    emit(TableDetailsLoading());
+    try {
+      _tableServiceRepository.saveChanges(orderItems);
+      Navigator.of(context).pop();
+    } catch (e) {
+      TableDetailsError(e.toString());
+    }
+  }
 
   void loadOrderItems(String orderId) async {
     emit(TableDetailsLoading());
     try {
-      orderItems =
-          await _tableServiceRepository.getTableOpenedOrderItems(orderId);
-      if (orderItems != null) {
-        emit(TableDetailsLoaded(orderItems!));
+      final tempOrderItems =
+          (await _tableServiceRepository.getTableOpenedOrderItems(orderId));
+      if (tempOrderItems != null) {
+        orderItems = tempOrderItems;
+        emit(TableDetailsLoaded(orderItems));
       }
     } catch (e) {
       TableDetailsError(e.toString());
@@ -50,12 +62,14 @@ class TableDetailsCubit extends Cubit<TableDetailsState> {
     final indexOfOrderItem = orderItems!.indexOf(orderItem);
     if (isPlus) {
       orderItems![indexOfOrderItem] = OrderItem(
+          id: orderItem.id,
           order: orderItem.order,
           product: orderItem.product,
           quantity: orderItem.quantity + 1);
     } else {
       if (orderItem.quantity > 1) {
         orderItems![indexOfOrderItem] = OrderItem(
+            id: orderItem.id,
             order: orderItem.order,
             product: orderItem.product,
             quantity: orderItem.quantity - 1);
@@ -63,6 +77,8 @@ class TableDetailsCubit extends Cubit<TableDetailsState> {
         orderItems!.removeAt(indexOfOrderItem);
       }
     }
+
+    print(orderItems);
 
     emit(TableDetailsLoaded(orderItems!));
   }

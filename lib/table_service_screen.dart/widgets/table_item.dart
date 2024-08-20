@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_service/data/models/service_table.dart';
+import 'package:table_service/services/locator.dart';
+import 'package:table_service/services/table_service_repository.dart';
+import 'package:table_service/table_details_screen/cubit/table_details_cubit.dart';
 import 'package:table_service/table_details_screen/table_details_screen.dart';
 import 'package:table_service/table_service_screen.dart/cubit/table_orders_cubit.dart';
 
@@ -15,9 +18,13 @@ class TableItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => TableDetailsScreen(
-            table: table,
-            order: order,
+          builder: (context) => BlocProvider(
+            create: (context) => TableDetailsCubit(
+                tableServiceRepository: locator<TableServiceRepository>()),
+            child: TableDetailsScreen(
+              table: table,
+              order: order,
+            ),
           ),
         ));
       },
