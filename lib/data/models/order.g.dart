@@ -7,15 +7,15 @@ part of 'order.dart';
 // **************************************************************************
 
 Order _$OrderFromJson(Map<String, dynamic> json) => Order(
-      tableId: json['tableId'] as String,
+      table: ServiceTable.fromJson(json['tableId']),
       waiter: json['waiter'] as String,
       status: $enumDecode(_$StatusEnumMap, json['status']),
-      id: json['id'],
+      id: json['id'] as String,
     );
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'id': instance.id,
-      'tableId': instance.tableId,
+      'tableId': instance.table.id,
       'waiter': instance.waiter,
       'status': _$StatusEnumMap[instance.status]!,
     };

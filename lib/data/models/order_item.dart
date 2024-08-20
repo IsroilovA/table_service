@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
+import 'package:table_service/data/models/order.dart';
+import 'package:table_service/data/models/product.dart';
 import 'package:uuid/uuid.dart';
 
 part 'order_item.g.dart';
@@ -8,13 +12,13 @@ const uuid = Uuid();
 @JsonSerializable()
 class OrderItem {
   String id;
-  String orderId;
-  String productId;
+  Order order;
+  Product product;
   int quantity;
 
   OrderItem(
-      {required this.orderId,
-      required this.productId,
+      {required this.order,
+      required this.product,
       required this.quantity,
       id})
       : id = id ?? uuid.v4();

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:table_service/data/models/service_table.dart';
 import 'package:uuid/uuid.dart';
 
 part 'order.g.dart';
@@ -10,12 +11,12 @@ enum Status { opened, closed }
 @JsonSerializable()
 class Order {
   String id;
-  String tableId;
+  ServiceTable table;
   String waiter;
   Status status;
 
   Order({
-    required this.tableId,
+    required this.table,
     required this.waiter,
     required this.status,
     id,

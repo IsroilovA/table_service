@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_service/services/locator.dart';
+import 'package:table_service/services/table_service_repository.dart';
 import 'package:table_service/tabs/cubit/tabs_cubit.dart';
 import 'package:table_service/tabs/tabs_screen.dart';
 
@@ -17,9 +18,7 @@ final lightTheme = ThemeData(
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initialiseLocator();
-  // print((await locator<TestDraftRepository>().getAllTables())!
-  //     .last
-  //     .getListOfEntries);
+  print((await locator<TableServiceRepository>().getOrderItems()));
   runApp(const App());
 }
 
