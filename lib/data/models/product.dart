@@ -24,4 +24,8 @@ class Product {
       _$ProductFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductToJson(this);
+
+  String get getPrice {
+    return "\$ $price";
+  }
 }

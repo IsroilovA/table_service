@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:table_service/data/models/service_table.dart';
 import 'package:uuid/uuid.dart';

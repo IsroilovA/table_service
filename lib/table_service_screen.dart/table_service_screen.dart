@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_service/services/locator.dart';
 import 'package:table_service/services/table_service_repository.dart';
+import 'package:table_service/table_service_screen.dart/cubit/table_orders_cubit.dart';
 import 'package:table_service/table_service_screen.dart/cubit/table_service_cubit.dart';
 import 'package:table_service/table_service_screen.dart/widgets/table_item.dart';
 
@@ -27,7 +28,12 @@ class TableServiceScreen extends StatelessWidget {
                 crossAxisCount: 3,
               ),
               itemBuilder: (context, index) {
-                return TableItem(state.tables[index]);
+                return BlocProvider(
+                  create: (context) => TableOrdersCubit(
+                      tableServiceRepository:
+                          locator<TableServiceRepository>()),
+                  child: TableItem(state.tables[index]),
+                );
               },
             );
           } else if (state is TableServiceError) {

@@ -14,30 +14,45 @@ List<ServiceTable> tables = [
   ServiceTable(
       name: 'T 3',
       timeServed: DateTime.now().subtract(const Duration(hours: 3))),
-  ServiceTable(name: 'T 4', timeServed: null),
+  ServiceTable(
+      name: 'T 4',
+      timeServed: DateTime.now()
+          .subtract(const Duration(hours: 10))), // Added timeServed
   ServiceTable(
       name: 'T 5',
       timeServed: DateTime.now().subtract(const Duration(hours: 4))),
-  ServiceTable(name: 'T 6', timeServed: null),
+  ServiceTable(
+      name: 'T 6',
+      timeServed: DateTime.now()
+          .subtract(const Duration(hours: 11))), // Added timeServed
   ServiceTable(
       name: 'T 7',
       timeServed: DateTime.now().subtract(const Duration(hours: 5))),
-  ServiceTable(name: 'Table 8', timeServed: null),
   ServiceTable(
-    name: 'T 9',
-    timeServed: DateTime.now().subtract(
-      const Duration(hours: 6),
-    ),
-  ),
-  ServiceTable(name: 'Table 10', timeServed: null),
+      name: 'T 8',
+      timeServed: DateTime.now()
+          .subtract(const Duration(hours: 12))), // Added timeServed
+  ServiceTable(
+      name: 'T 9',
+      timeServed: DateTime.now().subtract(const Duration(hours: 6))),
+  ServiceTable(
+      name: 'T 10',
+      timeServed: DateTime.now()
+          .subtract(const Duration(hours: 13))), // Added timeServed
   ServiceTable(
       name: 'T 11',
       timeServed: DateTime.now().subtract(const Duration(hours: 7))),
-  ServiceTable(name: 'Table 12', timeServed: null),
+  ServiceTable(
+      name: 'T 12',
+      timeServed: DateTime.now()
+          .subtract(const Duration(hours: 14))), // Added timeServed
   ServiceTable(
       name: 'T 13',
       timeServed: DateTime.now().subtract(const Duration(hours: 8))),
-  ServiceTable(name: 'Table 14', timeServed: null),
+  ServiceTable(
+      name: 'T 14',
+      timeServed: DateTime.now()
+          .subtract(const Duration(hours: 15))), // Added timeServed
   ServiceTable(
       name: 'T 15',
       timeServed: DateTime.now().subtract(const Duration(hours: 9))),
@@ -78,7 +93,7 @@ List<Order> orders = [
   Order(table: tables[4], waiter: 'Waiter 4', status: Status.closed),
   Order(table: tables[6], waiter: 'Sarah', status: Status.opened),
   Order(table: tables[8], waiter: 'Waiter 6', status: Status.closed),
-  Order(table: tables[10], waiter: 'Waiter 7', status: Status.opened),
+  Order(table: tables[10], waiter: 'Sarah', status: Status.opened),
   Order(table: tables[12], waiter: 'Waiter 8', status: Status.closed),
 ];
 

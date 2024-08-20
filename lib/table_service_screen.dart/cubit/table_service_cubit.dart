@@ -10,7 +10,7 @@ class TableServiceCubit extends Cubit<TableServiceState> {
       : _tableServiceRepository = tableServiceRepository,
         super(TableServiceInitial());
 
-  TableServiceRepository _tableServiceRepository;
+  final TableServiceRepository _tableServiceRepository;
 
   void loadData() async {
     emit(TableServiceLoading());

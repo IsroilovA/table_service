@@ -21,4 +21,11 @@ class ServiceTable {
       _$ServiceTableFromJson(json);
 
   Map<String, dynamic> toJson() => _$ServiceTableToJson(this);
+
+  String? get getTimeServed {
+    if (timeServed == null) {
+      return null;
+    }
+    return "${timeServed!.hour}:${timeServed!.minute}";
+  }
 }
