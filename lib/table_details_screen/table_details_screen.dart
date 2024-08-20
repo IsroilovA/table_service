@@ -41,7 +41,7 @@ class _TableDetailsScreenState extends State<TableDetailsScreen> {
           IconButton(
               onPressed: () {
                 BlocProvider.of<TableDetailsCubit>(context)
-                    .saveChanges(context);
+                    .saveChanges(context, widget.order);
               },
               icon: const Icon(Icons.save))
         ],

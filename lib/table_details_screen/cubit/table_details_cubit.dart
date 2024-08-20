@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:table_service/data/models/order.dart';
 import 'package:table_service/data/models/order_item.dart';
 import 'package:table_service/data/models/product.dart';
@@ -17,10 +16,14 @@ class TableDetailsCubit extends Cubit<TableDetailsState> {
 
   List<OrderItem> orderItems = [];
 
-  void saveChanges(BuildContext context) async {
+  void saveChanges(BuildContext context, Order? order) async {
     emit(TableDetailsLoading());
     try {
-      _tableServiceRepository.saveChanges(orderItems);
+      if (order == null) {
+        _tableServiceRepository.saveChanges(orderItems, true);
+      } else {
+        _tableServiceRepository.saveChanges(orderItems, false);
+      }
       Navigator.of(context).pop();
     } catch (e) {
       TableDetailsError(e.toString());
@@ -37,13 +40,13 @@ class TableDetailsCubit extends Cubit<TableDetailsState> {
         emit(TableDetailsLoaded(orderItems));
       }
     } catch (e) {
-      TableDetailsError(e.toString());
+      emit(TableDetailsError(e.toString()));
     }
   }
 
   void addOrderItem(Order order, Product product) {
     bool containsProduct = false;
-    for (var element in orderItems!) {
+    for (var element in orderItems) {
       if (element.product.id == product.id) {
         containsProduct = true;
         break;
@@ -53,33 +56,30 @@ class TableDetailsCubit extends Cubit<TableDetailsState> {
     if (containsProduct) {
       return;
     }
-    orderItems!.add(OrderItem(order: order, product: product, quantity: 1));
-    emit(TableDetailsLoaded(orderItems!));
+    orderItems.add(OrderItem(order: order, product: product, quantity: 1));
+    emit(TableDetailsLoaded(orderItems));
   }
 
   void changeOrderItemQuantity(
       {required OrderItem orderItem, required bool isPlus}) {
-    final indexOfOrderItem = orderItems!.indexOf(orderItem);
+    final indexOfOrderItem = orderItems.indexOf(orderItem);
     if (isPlus) {
-      orderItems![indexOfOrderItem] = OrderItem(
+      orderItems[indexOfOrderItem] = OrderItem(
           id: orderItem.id,
           order: orderItem.order,
           product: orderItem.product,
           quantity: orderItem.quantity + 1);
     } else {
       if (orderItem.quantity > 1) {
-        orderItems![indexOfOrderItem] = OrderItem(
+        orderItems[indexOfOrderItem] = OrderItem(
             id: orderItem.id,
             order: orderItem.order,
             product: orderItem.product,
             quantity: orderItem.quantity - 1);
       } else {
-        orderItems!.removeAt(indexOfOrderItem);
+        orderItems.removeAt(indexOfOrderItem);
       }
     }
-
-    print(orderItems);
-
-    emit(TableDetailsLoaded(orderItems!));
+    emit(TableDetailsLoaded(orderItems));
   }
 }

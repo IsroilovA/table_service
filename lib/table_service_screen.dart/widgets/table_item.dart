@@ -6,6 +6,7 @@ import 'package:table_service/services/table_service_repository.dart';
 import 'package:table_service/table_details_screen/cubit/table_details_cubit.dart';
 import 'package:table_service/table_details_screen/table_details_screen.dart';
 import 'package:table_service/table_service_screen.dart/cubit/table_orders_cubit.dart';
+import 'package:table_service/table_service_screen.dart/cubit/table_service_cubit.dart';
 
 class TableItem extends StatelessWidget {
   const TableItem(this.table, {super.key});
@@ -17,16 +18,8 @@ class TableItem extends StatelessWidget {
     final order = context.select((TableOrdersCubit cubit) => cubit.orderItem);
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => TableDetailsCubit(
-                tableServiceRepository: locator<TableServiceRepository>()),
-            child: TableDetailsScreen(
-              table: table,
-              order: order,
-            ),
-          ),
-        ));
+        BlocProvider.of<TableServiceCubit>(context)
+            .navigateToDetails(context, table, order);
       },
       child: Card(
         clipBehavior: Clip.antiAlias,
